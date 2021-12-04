@@ -2,7 +2,8 @@
 走读的是master分支的apisix源码，首先读服务启动部分代码，启动apisix命令如下：
 > apisix start
 
-对应的代码位于/apisix/cli/ops.lua文件的start函数，该函数实现如下功能
+对应的代码位于/apisix/cli/ops.lua文件的start函数。
+## 走读init函数
 1）检查运行目录：
 
 ```lua
@@ -60,4 +61,13 @@ if customized_yaml then
     print("Use customized yaml: ", customized_yaml)
 end
 ```
+
+5）检查和初始化配置信息
+```init(env)```
+
+6)初始化etcd的配置信息，检查etcd节点的健康状态
+```init_etcd(env, args)```
+
+7)启动openresty
+```util.execute_cmd(env.openresty_args)```
 
