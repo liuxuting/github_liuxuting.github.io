@@ -40,23 +40,23 @@ end
 
 4）如果命令行传入配置路径，则建立其与conf/config.yaml之间的软连接，否则采用默认配置
 ```lua
-    local customized_yaml = args["config"]
-    if customized_yaml then
-        profile.apisix_home = env.apisix_home .. "/"
-        local local_conf_path = profile:yaml_path("config")
+local customized_yaml = args["config"]
+if customized_yaml then
+    profile.apisix_home = env.apisix_home .. "/"
+    local local_conf_path = profile:yaml_path("config")
 
-        local err = util.execute_cmd_with_error("mv " .. local_conf_path .. " "
-                                                .. local_conf_path .. ".bak")
-        if #err > 0 then
-            util.die("failed to mv config to backup, error: ", err)
-        end
-        err = util.execute_cmd_with_error("ln " .. customized_yaml .. " " .. local_conf_path)
-        if #err > 0 then
-            util.execute_cmd("mv " .. local_conf_path .. ".bak " .. local_conf_path)
-            util.die("failed to link customized config, error: ", err)
-        end
-
-        print("Use customized yaml: ", customized_yaml)
+    local err = util.execute_cmd_with_error("mv " .. local_conf_path .. " "
+                                            .. local_conf_path .. ".bak")
+    if #err > 0 then
+        util.die("failed to mv config to backup, error: ", err)
     end
+    err = util.execute_cmd_with_error("ln " .. customized_yaml .. " " .. local_conf_path)
+    if #err > 0 then
+        util.execute_cmd("mv " .. local_conf_path .. ".bak " .. local_conf_path)
+        util.die("failed to link customized config, error: ", err)
+    end
+
+    print("Use customized yaml: ", customized_yaml)
+end
 ```
 
