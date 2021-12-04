@@ -5,41 +5,41 @@
 1）检查运行目录：
 
 ```lua
-    if env.is_root_path then
-        util.die("Error: It is forbidden to run APISIX in the /root directory.\n")
-    end
+if env.is_root_path then
+    util.die("Error: It is forbidden to run APISIX in the /root directory.\n")
+end
 ```
 2）创建日志目录：
-\```
-    local cmd_logs = "mkdir -p " .. env.apisix_home .. "/logs"
-    util.execute_cmd(cmd_logs)
-\```
+```lua
+local cmd_logs = "mkdir -p " .. env.apisix_home .. "/logs"
+util.execute_cmd(cmd_logs)
+```
 
 3）检查nginx是否在运行
-\```
-    local pid_path = env.apisix_home .. "/logs/nginx.pid"
-    local pid = util.read_file(pid_path)
-    pid = tonumber(pid)
-    if pid then
-        local lsof_cmd = "lsof -p " .. pid
-        local res, err = util.execute_cmd(lsof_cmd)
-        if not (res and res == "") then
-            if not res then
-                print(err)
-            else
-                print("APISIX is running...")
-            end
-
-            return
+```lua
+local pid_path = env.apisix_home .. "/logs/nginx.pid"
+local pid = util.read_file(pid_path)
+pid = tonumber(pid)
+if pid then
+    local lsof_cmd = "lsof -p " .. pid
+    local res, err = util.execute_cmd(lsof_cmd)
+    if not (res and res == "") then
+        if not res then
+            print(err)
+        else
+            print("APISIX is running...")
         end
 
-        print("nginx.pid exists but there's no corresponding process with pid ", pid,
-              ", the file will be overwritten")
+        return
     end
-\```
+
+    print("nginx.pid exists but there's no corresponding process with pid ", pid,
+          ", the file will be overwritten")
+end
+```
 
 4）如果命令行传入配置路径，则建立其与conf/config.yaml之间的软连接，否则采用默认配置
-\```
+```lua
     local customized_yaml = args["config"]
     if customized_yaml then
         profile.apisix_home = env.apisix_home .. "/"
@@ -58,5 +58,5 @@
 
         print("Use customized yaml: ", customized_yaml)
     end
-\```
+```
 
