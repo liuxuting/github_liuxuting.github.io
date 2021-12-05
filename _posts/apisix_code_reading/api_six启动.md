@@ -3,6 +3,7 @@
 > apisix start
 
 对应的代码位于/apisix/cli/ops.lua文件的start函数。
+
 ## start函数
 1）检查运行目录：
 
@@ -74,7 +75,7 @@ end
 
 ```util.execute_cmd(env.openresty_args)```
 
-##init函数
+## init函数
 init函数用于检查运行目录、文件描述符数量限制，配置文件中服务端ip和port等信息、初始化nginx配置信息并写入conf/nginx.conf文件中。
 1）检查运行目录
 ```lua
